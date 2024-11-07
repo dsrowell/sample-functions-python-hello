@@ -1,4 +1,5 @@
 import boto3
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
 class DynamoDBManager:
@@ -33,8 +34,12 @@ class DynamoDBManager:
 
     def get_registration_by_id(self, registration_id):
         try:
-            response = self.registrations_table.get_item(Key={'id': registration_id})
-            return response.get('Item', None)
+            response = self.registrations_table.query(IndexName='confirmation_index', KeyConditionExpression=Key('confirmation').eq(registration_id))
+            if 'Items' in response:
+                item = response['Items'][0]
+                return {'eventid': int(item['eventid']), 'confirmation': item['confirmation']}
+            else:
+                return None
         except ClientError as e:
             print(f"Unable to fetch registration with ID {registration_id}: {e}")
             return None

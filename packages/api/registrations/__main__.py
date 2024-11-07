@@ -7,10 +7,13 @@ def main(args):
     #greeting = "Hello " + name + "! 2 + 2 = " + str(sum)
     #print(greeting)
     #return {"body": greeting}
-    #try:
-    #    db = DynamoDBManager()
-    #    regs = db.get_all_registrations()
-    #except Exception as e:
-    #    regs = e
-    regs = "none"
+    regs = "initial"
+    try:
+        db = DynamoDBManager()
+        regs = 'calling'
+        regs = db.get_registration_by_id('gLqZ3CKErWL')
+        if regs is None:
+            regs = 'no registrations found'
+    except Exception as e:
+        regs = f'exception: {str(e)}'
     return {"body": {"registrations": regs}}
