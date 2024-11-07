@@ -1,0 +1,7 @@
+packages:
+  - name: api
+    functions:
+      - name: events
+        runtime: python:default
+      - name: registrations
+        runtime: python:default
