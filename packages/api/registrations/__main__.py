@@ -2,18 +2,26 @@ from util import add
 from dynamodb import DynamoDBManager
 
 def main(args):
-    #name = args.get("name", "stranger")
-    #sum = add(2, 2)
-    #greeting = "Hello " + name + "! 2 + 2 = " + str(sum)
-    #print(greeting)
-    #return {"body": greeting}
-    regs = "initial"
-    try:
-        db = DynamoDBManager()
-        regs = 'calling'
-        regs = db.get_registration_by_id('gLqZ3CKErWL')
-        if regs is None:
-            regs = 'no registrations found'
-    except Exception as e:
-        regs = f'exception: {str(e)}'
-    return {"body": {"registrations": regs}}
+    http = args['http']
+    method = http['method']
+    path = http['path'].strip('/')
+    parts = path.split('/')
+
+    db = DynamoDBManager()
+
+    eventid = args['eventid'] if 'eventid' in args else None
+
+    if method == 'GET':
+        if len(parts) == 0:
+            if eventid is not None:
+                eventid = args['eventid']
+                #return {'body': {'registrations': db.get_all_registrations(eventid)}}
+                return {'body': {'registrations': f'get registrations for {eventid}'}}
+            else:
+                return {'body': {'error': 'you need to supply eventid'}}
+        elif len(parts) == 1:
+            #return {'body': {'parts': parts}}
+            regs = db.get_registration_by_id(parts[0])
+            return {'body': {'registrations': regs}}
+
+    return {'body': {'message': 'end of main'}}

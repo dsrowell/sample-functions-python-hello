@@ -8,17 +8,21 @@ class DynamoDBManager:
         self.events_table = self.dynamodb.Table('events')
         self.registrations_table = self.dynamodb.Table('registrations')
 
-    def get_all_events(self):
+    def get_all_events(self, year):
         try:
-            response = self.events_table.scan()
+            response = self.events_table.query(
+                KeyConditionExpression=Key('year').eq(year)
+            )
             return response.get('Items', [])
         except ClientError as e:
             print(f"Unable to fetch events: {e}")
             return None
 
-    def get_all_registrations(self):
+    def get_all_registrations(self, eventid):
         try:
-            response = self.registrations_table.scan()
+            response = self.registrations_table.query(
+                KeyConditionExpression=Key('eventid').eq(eventid)
+            )
             return response.get('Items', [])
         except ClientError as e:
             print(f"Unable to fetch registrations: {e}")
