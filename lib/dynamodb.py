@@ -48,6 +48,23 @@ class DynamoDBManager:
             print(f"Unable to fetch registration with ID {registration_id}: {e}")
             return None
 
+    def get_registration_by_ids(self, eventid, confirmation):
+        try:
+            response = self.registrations_table.query(
+                Key = {
+                    'eventid': eventid,
+                    'confirmation': confirmation
+                }
+            )
+            if 'Items' in response:
+                item = response['Items'][0]
+                return {'eventid': int(item['eventid']), 'confirmation': item['confirmation']}
+            else:
+                return None
+        except ClientError as e:
+            print(f"Unable to fetch registration with ID {registration_id}: {e}")
+            return None
+
     def post_event(self, event_data):
         try:
             self.events_table.put_item(Item=event_data)

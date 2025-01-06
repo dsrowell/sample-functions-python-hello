@@ -1,3 +1,5 @@
+import dynamodb
+
 def main(event, context):
     # event
     #   http
@@ -10,4 +12,8 @@ def main(event, context):
     method = http['method']
     path = http['path']
 
-    return {"body": {"event": event}}
+    year = event['year']
+
+    db = DynamoDBManager()
+    items = db.get_all_events(year)
+    return {"body": {"event": event, "items": items}}
