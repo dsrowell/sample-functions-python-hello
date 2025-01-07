@@ -12,9 +12,9 @@ def main(event, context):
     method = http['method']
     path = http['path']
 
-    print(f'event: {event}')
-    year = event['year'] if 'year' in event else None
-    print(f'year: {year}')
+    #print(f'event: {event}')
+    #year = event['year'] if 'year' in event else None
+    #print(f'year: {year}')
 
     return {"body": {"event": event}}
 
