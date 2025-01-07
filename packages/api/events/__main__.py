@@ -12,8 +12,11 @@ def main(event, context):
     method = http['method']
     path = http['path']
 
-    year = event['year']
+    year = event['year'] if 'year' in event else None
 
-    db = DynamoDBManager()
-    items = db.get_all_events(year)
-    return {"body": {"event": event, "items": items}}
+    if year:
+        db = DynamoDBManager()
+        items = db.get_all_events(year)
+        return {"body": {"event": event, "items": items}}
+    else:
+        {"body": {"error": "specify year"}}
