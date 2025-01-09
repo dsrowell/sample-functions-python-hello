@@ -1,4 +1,4 @@
-import dynamodb
+#import dynamodb
 
 def main(event, context):
     # event
@@ -8,9 +8,9 @@ def main(event, context):
     #     method: GET
     #     path: /
     #   <name>: <val>
-    http = event['http']
-    method = http['method']
-    path = http['path']
+    #http = event['http']
+    #method = http['method']
+    #path = http['path']
 
     #print(f'event: {event}')
     #year = event['year'] if 'year' in event else None
