@@ -1,4 +1,4 @@
-#import dynamodb
+import dynamodb
 
 def main(event, context):
     # event
