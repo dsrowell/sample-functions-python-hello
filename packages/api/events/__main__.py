@@ -24,4 +24,4 @@ def main(event, context):
         items = db.get_all_events(year)
         return {"body": {"event": event, "items": items}}
     else:
-        {"body": {"error": "specify year"}}
+        return {"body": {"error": "specify year"}}
